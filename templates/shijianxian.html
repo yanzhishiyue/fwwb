@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<script src="static/files/index/wavesurfer.js"></script>
+
+    <script src="static/files/index/timeline.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/wavesurfer.js/4.2.0/plugin/wavesurfer.timeline.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/wavesurfer.js/4.2.0/plugin/wavesurfer.cursor.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/wavesurfer.js/4.2.0/plugin/wavesurfer.spectrogram.js"></script>
+
+</head>
+<body>
+
+
+<div id="waveform"></div>
+<button onclick="wavesurfer.playPause()">播放/暂停</button>
+
+<!--时间轴 -->
+<script>
+     {#import timeline from 'static/files/index/timeline.js'#}
+
+    var wavesurfer = WaveSurfer.create({
+        container: '#waveform',
+        waveColor: 'violet',
+        progressColor: 'purple',
+        {#    plugins: [#}
+        {#    WaveSurfer.regions.create({})#}
+        {#]#}
+        {#plugins: [#}
+        {#    WaveSurfer.timeline.create({#}
+        {#        container: "#wave-timeline"#}
+        {#    })#}
+        {#]#}
+    });
+
+    {#wavesurfer.on('ready', function () { var timeline = Object.create(WaveSurfer.Timeline); timeline.init({ wavesurfer: wavesurfer, container: '#waveform-timeline' }); });#}
+    wavesurfer.load('../static/uploads/temp/jhgs.mp4')
+</script>
+
+
+</body>
+</html>

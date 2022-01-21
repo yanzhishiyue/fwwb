@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://www.jq22.com/jquery/jquery-3.3.1.js"></script>
+
+    <script src="https://unpkg.com/wavesurfer.js"></script>
+    <script src="https://unpkg.com/wavesurfer.js/dist/plugin/wavesurfer.regions.min.js"></script>
+    <script src="https://unpkg.com/wavesurfer.js/dist/plugin/wavesurfer.timeline.js"></script>
+</head>
+<body>
+<div id="waveform"> </div>
+<div id="waveform-timeline" style="width: 1000px ; height: 80px"></div>
+<script>var wavesurfer = WaveSurfer.create({
+    container: '#waveform',
+    waveColor: 'violet',
+    progressColor: 'purple',
+
+});
+
+
+wavesurfer.on('ready', function () { wavesurfer.play(); });
+wavesurfer.on('pause', function () {
+    wavesurfer.params.container.style.opacity = 0.9;//识别到监听事件后，需要执行的操作
+});
+wavesurfer.load('../static/uploads/temp/jhgs.mp4');
+
+</script>
+</body>
+</html>

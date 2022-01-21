@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>登录</title>
+     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+<script src="http://apps.bdimg.com/libs/jquery/1.7.1/jquery.min.js"></script>
+<link href="static/css/verify.css" rel="stylesheet" type="text/css">
+<link href="static/css/font-awesome.css" rel="stylesheet" type="text/css">
+<link href="static/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="static/css/registercss.css" type="text/css" rel="stylesheet"/>
+
+<!--<link href="static/css/main.css" rel="stylesheet" type="text/css">-->
+
+<style type="text/css">
+body {
+	background: url(static/images/page01/bj05.png);
+	color:#1B1B1B;
+	background-size: 100% 100%;
+	background-attachment: fixed;
+}
+* {
+	padding: 0;
+	margin: 0;
+}
+#top {
+	height: 125px;
+	width: 100%;
+	margin-top: 20px;
+}
+.top01 {
+	border-right: 1px solid #2A2929;
+	width: 10px;
+	height: 100px;
+	display: inline-block;
+	position: relative;
+}
+#img03 {
+	margin: 0 0 20px 10px;
+}
+.main2 {
+	padding: 15px 15px 0 15px;
+	width: 320px;
+	height: 500px;
+	border-radius: 15px;
+	background: #D5CBCB;
+	background-color: rgba(255,255,255,0.7);
+	margin-top: 1%;
+	margin-left: 40%;
+	font-family: "楷体";
+	border-radius: 3%;
+}
+.title {
+	height: 25px;
+	text-align: center;
+	line-height: 30px;
+	padding-bottom: 20px;
+	margin-top: 5px;
+	border-bottom: 1px solid #989898;
+}
+.title span {
+	font-size: 20px;
+	color: #000000;
+}
+.title01 {
+	height: 64px;
+	line-height: 64px;
+}
+.title01 span {
+	font-size: 12px;
+	color: gray;
+}
+.text {
+	position: absolute;
+	top: 250px;
+	left: 80px;
+}
+.input-content {
+	margin: 15px 0 0 20px;
+}
+.input-content input {
+	width: 230px;
+	height: 35px;
+	border: 1px solid #dad9d6;
+	padding: 0 10px 0 10px;
+	margin: 10px 0 30px 0;
+	background-color: rgba(255,255,255,1.00);
+}
+.user {
+	font-size: 25px;
+	color: #1B1B1B;
+}
+.lock {
+	font-size: 25px;
+	color: #1B1B1B;
+}
+
+.enter-btn {
+	margin-top: 20px;
+	width: 260px;
+	height: 35px;
+	color: white;
+	background: #1ABC9C;
+	border: 0px;
+}
+
+.foor {
+	font-size: 12px;
+	color: gray;
+	margin-top: 20px;
+}
+.right {
+	float: right;
+	margin-right: 20px;
+}
+.right a {
+	font-size: 15px;
+	float: right;
+	color: #212121;
+}
+.left {
+	float: left;
+	margin-left: 25px;
+}
+.left a {
+	font-size: 15px;
+	float: right;
+	color: #212121;
+}
+a {
+	text-decoration: none;
+}
+
+</style>
+
+</head>
+
+<body>
+<div id="top"> <img id="img02" src="static/images/page01/logo.png" alt="你猜我对不队" height="100px">
+  <div class="top01"></div>
+  <img id="img03" src="static/images/page01/022.png" alt="" height="60px" width="700px"> </div>
+<div class="main2">
+    <div > <span>用户注册</span> </div>
+    <form   method="post" >
+    {{ form.csrf_token() }}
+    <div class="input-content">
+        <div style="margin-top: 0px">{{ form.username.label }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ form.username }}<br></div>
+        <div style="margin-top: -20px">{{ form.password.label }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ form.password }}<br></div>
+        <div style="margin-top: -20px"> {{ form.name.label }}&nbsp;&nbsp;{{ form.name }}<br></div>
+        <div style="margin-top: -20px">{{ form.email.label }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ form.email }}<br></div>
+    <div style="margin-top: -20px"> {{ form.phonenumber.label }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ form.phonenumber }}</div>
+         <div style="text-align: center">
+        <div class="title-msg"> <span>{% for message in get_flashed_messages() %}
+        {{ message }}
+    {% endfor %}</span>
+        </div>
+         <div style="margin-left: -60px ;margin-top: 0px">
+         {{ form.submit }}
+         </div>
+    </div>
+
+</form>
+
+
+
+</div>
+</body>
+</html>
+

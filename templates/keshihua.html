@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <template>
+  <div class="waveSurfer">
+    <div class="top">
+      <span @click="leftSelect">向前选中</span>
+      <span @click="rightSelect">向后选中</span>
+      <span @click="Region">标注</span>
+    </div>
+    <!-- 时间轴 -->
+    <div id="wave-timeline" />
+    <!-- 频谱图 -->
+    <div id="waveform">
+      <progress
+        id="progress"
+        class="progress progress-striped"
+        value="0"
+        max="100"
+      ></progress>
+    </div>
+    <div v-show="ppt" id="wave-spectrogram" class="mt-20" />
+    <!-- 控制按钮 -->
+    <div class="title">
+      <ul>
+        <li>
+          <span @click="zoomIn"></span>
+        </li>
+        <li>
+          <span @click="rew"></span>
+        </li>
+        <li>
+          <span :class="{ on: isPlay }" @click="plays"></span>
+        </li>
+        <li>
+          <span @click="speek"></span>
+        </li>
+        <li>
+          <span @click="zoomOut"></span>
+        </li>
+        <li>
+          <span @click="replay"></span>
+        </li>
+        <li @click="toggleMute" :class="{ on: toggleMutebutton }" class="sound">
+          <span></span>
+        </li>
+        <li>
+          <input
+            @mouseup="volumeBarHandle"
+            v-model="volValue"
+            type="range"
+            min="0"
+            max="1"
+            value="0.8"
+            step="0.01"
+          />
+        </li>
+        <li @click="DoubleSpeed(index)">
+          {{ speed[index] + " X" }}
+        </li>
+      </ul>
+    </div>
+  </div>
+</template>
+<script>
+import WaveSurfer from "wavesurfer.js";
+import Timeline from "wavesurfer.js/dist/plugin/wavesurfer.timeline.js";
+import Regions from "wavesurfer.js/dist/plugin/wavesurfer.regions.js";
+export default {
+  data: function () {
+    return {
+      index: 0,
+      speed: [1.0, 1.5, 2.0, 0.5],
+      isPlay: false,
+      ppt: false,
+      ds: 1.0,
+      zoomValue: 100,
+      zoomMin: 100,
+      fast: 3,
+      back: 3,
+      noteData: [],
+      toggleMutebutton: true,
+      volValue: 0,
+      audioUrl: "",
+      loading: true,
+    };
+  },
+  // computed: {
+  //   // 计算属性的 getter
+  //   getUrl: function() {
+  //     // `this` 指向 vm 实例
+  //     return this.$store.state.voicetrain.url
+  //   }
+  // },
+  // watch: {
+  //   getUrl(newUrl) {
+  //     this.loading = true
+  //     this.audioUrl = newUrl
+  //     document.getElementById('waveform').innerHTML = ''
+  //     this.init()
+  //   }
+  // },
+  mounted() {
+    this.audioUrl =
+      "http://192.168.1.101:8080/api/files/20201104/62afa213458d44b0a99440b33fb694b9";
+    this.init();
+  },
+
+  methods: {
+    // 初始化
+    init() {
+      document.getElementById("progress").style.display = "block";
+      this.$nextTick(() => {
+        this.wavesurfer = WaveSurfer.create({
+          container: "#waveform",
+          cursorColor: "#DB7093", // 声波播放进度线color
+          audioRate: 1,
+          scrollParent: true,
+          backend: "WebAudio",
+          barHeight: 1.5,
+          waveColor: "#43d996", // 声波color
+          progressColor: "#43d996", // 已播放声波color
+          loaderColor: "#8B0000",
+          hideScrollbar: false,
+          autoCenter: true,
+          height: 120,
+          splitChannels: true,
+          responsive: true,
+          minPxPerSec: 1,
+          plugins: [
+            Timeline.create({
+              container: "#wave-timeline",
+              fontSize: 14,
+              primaryFontColor: "#9191a5",
+              secondaryFontColor: "#9191a5",
+              primaryColor: "#9191a5",
+              secondaryColor: "#9191a5",
+            }),
+            Regions.create({}),
+          ],
+        });
+        this.wavesurfer.addRegion({
+          loop: false,
+          drag: false,
+          resize: false,
+          color: "rgba(254, 255, 255, 0.4)",
+        });
+        // 加载进度条
+        this.wavesurfer.on("loading", function (percents) {
+          document.getElementById("progress").value = percents;
+        });
+        this.wavesurfer.load(this.audioUrl);
+        this.value = this.wavesurfer.getVolume() * 100; // 获取音量
+        this.zoomValue = this.wavesurfer.params.minPxPerSec;
+        this.zoomMin = this.wavesurfer.params.minPxPerSec;
+        this.wavesurfer.zoom(Number(this.zoomValue));
+        this.wavesurfer.panner = this.wavesurfer.backend.ac.createPanner();
+        this.wavesurfer.backend.setFilter(this.wavesurfer.panner);
+        let _this = this;
+        _this.wavesurfer.on("ready", function () {
+          _this.wavesurfer.enableDragSelection({
+            color: "rgba(0, 180, 0, 0.3)",
+          });
+          _this.wavesurfer.clearRegions();
+          _this.wavesurfer.zoom(_this.zoomValue);
+          // 音频加载完成
+          document.getElementById("progress").style.display = "none";
+          document.getElementById("progress").value = 0;
+          _this.isPlay = true;
+          _this.wavesurfer.play(0);
+        });
+        document.getElementById("waveform").onclick = function () {
+          _this.isPlay = false;
+          _this.wavesurfer.clearRegions();
+        };
+        // 更新区域时。回调将接收该Region对象。
+        // this.wavesurfer.on("region-updated", function (region) {
+        //   region.playLoop(); // 循环播放选中区域
+        //   _this.isPlay = true;
+        // });
+        _this.wavesurfer.on("region-created", _this.addRegion);
+        _this.wavesurfer.on("region-click", _this.editAnnotation);
+
+        _this.wavesurfer.on("finish", function () {
+          _this.wavesurfer.play(0);
+        });
+      });
+    },
+    addRegion(params) {
+      this.wavesurfer.clearRegions();
+      params.handleLeftEl.style.backgroundColor = "transparent";
+      params.handleRightEl.style.backgroundColor = "transparent";
+    },
+    toggleMute() {
+      if (this.toggleMutebutton) {
+        this.volumeCached = this.wavesurfer.getVolume();
+        this.wavesurfer.setVolume(0);
+        this.toggleMutebutton = false;
+        this.volValue = 0;
+      } else {
+        if (this.volumeCached == 0) this.volumeCached = 1;
+        this.wavesurfer.setVolume(this.volumeCached);
+        this.toggleMutebutton = true;
+        this.volValue = this.volumeCached;
+      }
+    },
+    volumeBarHandle(e) {
+      if (e.offsetX >= 0 && e.offsetX <= 80) {
+        this.toggleMutebutton = true;
+        this.wavesurfer.setVolume(e.offsetX / 80);
+      } else if (e.offsetX < 0) {
+        this.toggleMutebutton = false;
+        this.wavesurfer.setVolume(0);
+      } else {
+        this.wavesurfer.setVolume(1);
+        this.toggleMutebutton = true;
+      }
+    },
+    // 标注
+    Region() {
+      console.log(
+        Object.getOwnPropertyNames(this.wavesurfer.regions.list).length
+      );
+      if (
+        Object.getOwnPropertyNames(this.wavesurfer.regions.list).length == 0
+      ) {
+        alert("请选择波纹");
+        return;
+      }
+      let start = 0,
+        end = 0;
+      for (var k in this.wavesurfer.regions.list) {
+        let obj = this.wavesurfer.regions.list[k];
+        start = obj.start.toFixed(2) * 1000;
+        end = obj.end.toFixed(2) * 1000;
+      }
+      console.log(this.wavesurfer);
+      console.log("开始", start);
+      console.log("结束", end);
+    },
+    // 播放
+    plays() {
+      this.isPlay = !this.isPlay;
+      this.wavesurfer.playPause(); //切换播放，应用播放或暂停
+    },
+    // 回退
+    rew() {
+      this.wavesurfer.skip(-this.back);
+      this.goPlay();
+    },
+    // 快进
+    speek() {
+      this.wavesurfer.skip(this.fast);
+      this.goPlay();
+    },
+    // 重载
+    replay() {
+      this.isPlay = true;
+      this.wavesurfer.stop();
+      this.wavesurfer.clearRegions();
+      this.wavesurfer.play(0);
+    },
+    // 倍速
+    DoubleSpeed(index) {
+      if (index === 3) {
+        this.index = 0;
+        this.wavesurfer.setPlaybackRate(this.speed[this.index]);
+      } else {
+        this.index = index + 1;
+        this.wavesurfer.setPlaybackRate(this.speed[this.index]);
+      }
+      console.log(this.wavesurfer);
+    },
+    // 缩放百分比显示格式
+    formatZoom(val) {
+      return val + 100 + " 像素 / 秒";
+    },
+    // 点击缩小
+    zoomIn() {
+      if (this.zoomValue >= 100) {
+        return;
+      }
+      this.zoomValue += 1;
+      this.wavesurfer.zoom(this.zoomValue);
+    },
+    // 点击扩大
+    zoomOut() {
+      if (this.zoomValue < -100) {
+        return;
+      }
+      this.zoomValue -= 1;
+      this.wavesurfer.zoom(this.zoomValue);
+    },
+    // 缩放监听
+    zoomChange() {
+      this.wavesurfer.zoom(Number(this.zoomValue));
+    },
+    goPlay() {
+      let start = this.wavesurfer.getCurrentTime();
+      this.wavesurfer.play(start);
+    },
+    // 向前选中
+    leftSelect() {
+      let end = this.wavesurfer.getCurrentTime(); // 获取当前播放位置
+      this.waveRegion(this.wavesurfer, 0, end, "rgba(0,180,0,.3)", true);
+    },
+    // 向后选中
+    rightSelect() {
+      let start = this.wavesurfer.getCurrentTime(); // 获取当前播放位置
+      let end = this.wavesurfer.getDuration(); // 获取音频片段的持续时间
+      this.waveRegion(this.wavesurfer, start, end, "rgba(0,180,0,.3)", true);
+    },
+    waveRegion(wavesurfer, start, end, color, clear) {
+      if (!clear) {
+        wavesurfer.clearRegions();
+      }
+      wavesurfer.addRegion({
+        start: start,
+        end: end,
+        color: color,
+        drag: false,
+      });
+    },
+    // 区域点击事件新建
+    saveRegions() {
+      console.log("声纹点击---");
+      this.noteData = [];
+      const _this = this;
+      this.noteData = Object.keys(_this.wavesurfer.regions.list).map(function (
+        id
+      ) {
+        const region = _this.wavesurfer.regions.list[id];
+        return {
+          id: id,
+          edit: false,
+          start: Math.round(region.start * 10) / 10,
+          end: Math.round(region.end * 10) / 10,
+          attributes: region.attributes,
+          data: { note: region.data.note || "" },
+        };
+      });
+    },
+    // 区域点击
+    editAnnotation() {
+      this.isPlay = false;
+    },
+    showNote(region) {
+      if (!this.showNote.el) {
+        this.showNote.el = document.querySelector("#subtitle");
+      }
+      this.showNote.el.textContent = region.data.note || "–";
+    },
+    // 设置音量
+    setVolume(val) {
+      console.log(val);
+      this.wavesurfer.setVolume(val / 100);
+    },
+    // 实例点击
+    clearReagion() {
+      this.wavesurfer.clearRegions();
+    },
+  },
+};
+</script>
+<style  lang="scss" scoped>
+#waveform {
+  position: relative;
+}
+.top {
+  width: 100%;
+  flex-basis: 70px;
+  line-height: 40px;
+  flex-shrink: 0;
+  color: white;
+  text-indent: 15px;
+  span,
+  el-slider {
+    color: rgb(39, 39, 39);
+    font-size: 13px;
+    font-weight: 700;
+    margin-right: 20px;
+    padding: 4px 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+  }
+}
+.title {
+  width: 100%;
+  flex-basis: 70px;
+  line-height: 40px;
+  text-align: left;
+  flex-shrink: 0;
+  color: white;
+  text-indent: 15px;
+  ul {
+    list-style-type: none;
+    padding-inline-start: 0;
+    .speed {
+      display: flex;
+      flex-direction: column;
+    }
+    li {
+      position: relative;
+      display: inline-block;
+      cursor: default;
+      &:hover {
+      }
+      &:active {
+      }
+      span {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+      }
+      &:nth-child(1) span {
+        width: 27px;
+        height: 27px;
+        background: url("img/缩小.png") right;
+        background-size: cover;
+      }
+      &:nth-child(2) span {
+        background: url("img/kuaitui_bg.png") right;
+        background-size: cover;
+      }
+      &:nth-child(3) {
+        span {
+          background: url("img/bofang_bg.png") right;
+          background-size: cover;
+        }
+        .on {
+          background: url("img/zanting_bg.png") right;
+          background-size: cover;
+        }
+      }
+      &:nth-child(4) span {
+        background: url("img/kuaijin_bg.png") right;
+        background-size: cover;
+      }
+      &:nth-child(5) span {
+        background: url("img/缩放.png") right;
+        background-size: cover;
+      }
+      &:nth-child(6) span {
+        background: url("img/zhongbo.png") right;
+        background-size: cover;
+      }
+      &:nth-child(9) {
+        color: rgb(39, 39, 39);
+        font-size: 13px;
+        font-weight: 700;
+      }
+      &:nth-child(7) {
+        background: none;
+        span {
+          width: 25px;
+          height: 25px;
+          background: url("img/静音.png") no-repeat;
+          background-size: cover;
+        }
+        &.on {
+          span {
+            width: 25px;
+            height: 25px;
+            background: url("img/喇叭.png") no-repeat;
+            background-size: cover;
+          }
+        }
+      }
+      &:nth-child(8) {
+        width: 80px;
+        background: none;
+        input {
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          -ms-appearance: none;
+          width: 80px;
+          height: 3px;
+          background-color: #bbbbbb;
+          position: absolute;
+          left: 0;
+          top: -14px;
+
+          &::-webkit-slider-thumb {
+            -webkit-appearance: none;
+          }
+          &::-moz-range-trackpseduo {
+            -moz-appearance: none;
+          }
+          &::-ms-track {
+            width: 100%;
+            cursor: pointer;
+            background: transparent; /* Hides the slider so custom styles can be added */
+            border-color: transparent;
+            color: transparent;
+          }
+          &:focus {
+            outline: none;
+          }
+          &::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 9px;
+            width: 9px;
+            margin-top: -1px;
+            background: #bbb;
+            border-radius: 50%;
+            border: solid 0.125em rgba(205, 224, 230, 0.5);
+          }
+          &::-moz-range-thumb {
+            -moz-appearance: none;
+            height: 6px;
+            width: 6px;
+            margin-top: -1px;
+            background: #bbb;
+            border-radius: 50%;
+            border: solid 0.125em rgba(205, 224, 230, 0.5);
+          }
+          &::-ms-track {
+            -moz-appearance: none;
+            height: 6px;
+            width: 6px;
+            margin-top: -1px;
+            background: #bbb;
+            border-radius: 50%;
+            border: solid 0.125em rgba(205, 224, 230, 0.5);
+          }
+        }
+      }
+    }
+  }
+}
+#wave-timeline {
+  height: 21px;
+}
+#waveform {
+  width: 100%;
+  flex-basis: 128px;
+  flex-shrink: 0;
+  position: relative;
+}
+#progress {
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  background: #ccc;
+  top: 48%;
+  opacity: 0.7;
+  z-index: 44;
+}
+.mt-20 {
+  margin-top: 20px;
+}
+.mt-30 {
+  margin-top: 30px;
+}
+.waveSurfer {
+  width: 470px;
+}
+.waveSurfer >>> .el-slider__runway {
+  margin: 6px 0;
+}
+</style>
+
+</head>
+<body>
+
+</body>
+</html>

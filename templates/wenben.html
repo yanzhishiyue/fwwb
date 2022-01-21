@@ -1,0 +1,824 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>文本</title>
+     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <script src="https://unpkg.com/wavesurfer.js"></script>
+    <link href="static/resources/css/jquery-ui-themes.css" type="text/css" rel="stylesheet"/>
+    <link href="static/resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="static/data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="static/files/文本/styles.css" type="text/css" rel="stylesheet"/>
+    <script src="static/resources/scripts/jquery-1.7.1.min.js"></script>
+    <script src="static/resources/scripts/jquery-ui-1.8.10.custom.min.js"></script>
+    <script src="static/resources/scripts/prototypePre.js"></script>
+    <script src="static/data/document.js"></script>
+    <script src="static/resources/scripts/prototypePost.js"></script>
+    <script src="static/files/文本/data.js"></script>
+    <script src="static/files/selectvideo/request.js"></script>
+    <script type="text/javascript" src="static/files/record.js"></script>
+
+    <script src="https://unpkg.com/wavesurfer.js/dist/plugin/wavesurfer.regions.min.js"></script>
+    <script src="https://unpkg.com/wavesurfer.js/dist/plugin/wavesurfer.timeline.js"></script>
+    <script type="text/javascript">
+        $axure.utils.getTransparentGifPath = function () {
+            return 'static/resources/images/transparent.gif';
+        };
+        $axure.utils.getOtherPath = function () {
+            return 'static/resources/Other.html';
+        };
+        $axure.utils.getReloadPath = function () {
+            return 'static/resources/reload.html';
+        };
+    </script>
+
+    <style>
+        .pointer {
+
+            cursor: pointer;
+
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        #waveform {
+            border: solid 1px #ccc;
+            border-radius: 4px;
+            width: 600px;
+            height: 80px;
+            overflow: hidden;
+        }
+
+        #waveform wave {
+            height: 100% !important;
+        }
+
+        button {
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+
+        .login-button { /* 按钮美化 */
+            width: 200px; /* 宽度 */
+            height: 40px; /* 高度 */
+            border-width: 1px; /* 边框宽度 */
+            border-radius: 2px; /* 边框半径 */
+            background: #1ABC9C; /* 背景颜色 */
+            cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+            outline: none; /* 不显示轮廓线 */
+            font-family: Microsoft YaHei; /* 设置字体 */
+            color: white; /* 字体颜色 */
+            font-size: 17px; /* 字体大小 */
+        }
+
+        .login-button:hover { /* 鼠标移入按钮范围时改变颜色 */
+            background: #15d6ba;
+        }
+
+    </style>
+</head>
+<body>
+<div id="base" class="">
+
+    <!-- Unnamed (矩形) -->
+    <div id="u81" class="ax_default box_1">
+        <div id="u81_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u82" class="text" style="display:none; visibility: hidden">
+            <p><span></span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u83" class="ax_default box_3">
+        <div id="u83_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u84" class="text" style="display:none; visibility: hidden">
+            <p><span></span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u85" class="ax_default _一级标题">
+        <div id="u85_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u86" class="text">
+            <p><span>教学视频语音提取与审计系统</span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u87" class="ax_default box_1">
+        <div id="u87_div" class="" style="display:none; visibility: hidden"></div>
+        <!-- Unnamed () -->
+        <div id="u88" class="text" style="display:none; visibility: hidden">
+            <p><span></span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (文本框) -->
+    <div id="u89" class="ax_default text_field">
+        <input id="u89_input" type="text" placeholder="请在此查找想要搜索的文本内容" onfocus="this.placeholder=''"
+               onblur="this.placeholder='请在此查找想要搜索的文本内容'"/>
+    </div>
+
+    <!-- Unnamed (水平线) -->
+    <div id="u90" class="ax_default line">
+        <img id="u90_img" class="img " src="static/images/文本/u90.png"/>
+        <!-- Unnamed () -->
+        <div id="u91" class="text" style="display:none; visibility: hidden">
+            <p><span></span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (形状) -->
+    <div id="u92" class="ax_default primary_button">
+        <input type="button" onclick="textsearch()" class="pointer"
+               style="width: 80px; height: 60px;padding: 0;border: 0; opacity: 0.8; position: absolute;margin-left: -20px;margin-top: 0px;background:url(static/images/文本/u92.png) no-repeat">
+        {#        <img id="u92_img" class="img " src="static/images/文本/u92.png"/>#}
+        <!-- Unnamed () -->
+        <div id="u93" class="text" style="display:none; visibility: hidden">
+            <p><span></span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (多行文本框) -->
+    <div id="u94" class="ax_default text_area">
+        <div id="u94_input">{% for item in zidian %}
+            {{ item }}:{{ zidian[item] }}
+            <div style="float: right">{{ csz[item] }}</div><br>
+        {% endfor %}
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u95" class="ax_default box_1">
+        <div id="u95_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u96" class="text" style="display:none; visibility: hidden">
+            <p><span></span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (水平线) -->
+    <div id="u97" class="ax_default line">
+        <img id="u97_img" class="img " src="static/images/文本/u90.png"/>
+        <!-- Unnamed () -->
+        <div id="u98" class="text" style="display:none; visibility: hidden">
+            <p><span></span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u99" class="ax_default button">
+        <div id="u99_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u100" class="text">
+            <p><span>录音</span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u101" class="ax_default button">
+        <div id="u101_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u102" class="text">
+            <p><span>文本</span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (水平线) -->
+    <div id="u103" class="ax_default line">
+        <img id="u103_img" class="img " src="static/images/文本/u90.png"/>
+        <!-- Unnamed () -->
+        <div id="u104" class="text" style="display:none; visibility: hidden">
+            <p><span></span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (文本框) -->
+    <div id="u105" class="ax_default text_field">
+        <input id="u105_input" type="text" value=""/>
+    </div>
+
+    <!-- Unnamed (形状) -->
+    <div id="u106" class="ax_default primary_button">
+        {#        <img id="u106_img" class="img " src="static/images/文本/u106.png"/>#}
+        <input type="button" onclick="bofang()" class="pointer"
+               style="border: 0px; opacity:0.8; width: 60px;height: 40px;background:url('static/images/文本/u106.png') no-repeat;">
+        <!-- Unnamed () -->
+        <div id="u107" class="text" style="display:none; visibility: hidden">
+            <p><span></span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (动态面板) -->
+    <div id="u108" class="ax_default">
+        <div id="u108_state0" class="panel_state" data-label="录音" style="">
+            <div id="u108_state0_content" class="panel_state_content">
+
+
+                <audio controls autoplay style="position:absolute;margin-top: 40px;margin-left: 180px"></audio>
+                <script>
+
+                    var recorder;
+
+                    var audio = document.querySelector('audio');
+
+                    function startRecording() {
+                        HZRecorder.get(function (rec) {
+                            recorder = rec;
+                            recorder.start();
+                        });
+                    }
+
+                    function stopRecording() {
+                        recorder.stop();
+                    }
+
+                    function playRecording() {
+                        recorder.play(audio);
+                    }
+
+                    function cancelAudio() {
+                        recorder.stop();
+                        recorder.clear();
+                    }
+
+                    function uploadAudio() {
+                        recorder.upload("/static/uploads/temp/video/", function (state, e) {
+                            switch (state) {
+                                case 'uploading':
+                                    var percentComplete = Math.round(e.loaded * 100 / e.total) + '%';
+                                    break;
+                                case 'ok':
+                                    alert(e.target.responseText);
+                                {#alert("上传成功");#}
+                                    break;
+                                case 'error':
+                                    alert("上传失败");
+                                    break;
+                                case 'cancel':
+                                    alert("上传被取消");
+                                    break;
+                            }
+                        });
+                    }
+
+                </script>
+                <!-- Unnamed (矩形) -->
+                <div id="u109" class="ax_default _默认样式">
+                    {#              <img id="u109_img" class="img " src="static/images/文本/u109.png"/>#}
+                    <input onclick="stopRecording()" type="button" class="pointer"
+                           style="width:160px; height:50px;border:0px;background: url(static/images/文本/u109.png) no-repeat left top;background-size: 90%"
+                           value=""/>
+                    <!-- Unnamed () -->
+                    <div id="u110" class="text">
+                        <p><span style="font-size: 16px">&nbsp;停&nbsp;止</span></p>
+                    </div>
+                </div>
+                <iframe src="" frameborder="0" name="frameName" style="display: none"></iframe>
+                <form action="" enctype='multipart/form-data' method='POST' target="frameName">
+                    <!-- Unnamed (矩形)提交 -->
+                    <div id="u111" class="ax_default _默认样式">
+                        {#              <img id="u111_img" class="img " src="static/images/文本/u111.png"/>#}
+                        {#             <img id="u117_img" class="img " src="static/images/文本/u111.png"/>#}
+
+
+                        <input type="submit" class="pointer"
+                               style="width:160px; height:50px;border:0px;background: url(static/images/文本/u111.png) no-repeat left top;background-size: 80%"
+                               value=""/>
+                        <!-- Unnamed () -->
+                        <div id="u118" class="text">
+                            <p><span>上传</span></p>
+                        </div>
+
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u113" class="ax_default _默认样式">
+                        {#              <img id="u113_img" class="img " src="static/images/文本/u109.png"/>#}
+                        <input onclick="playRecording()" type="button" class="pointer"
+                               style="width:160px; height:50px;border:0px;background: url(static/images/文本/u109.png) no-repeat left top;background-size: 90%"
+                               value=""/>
+                        <!-- Unnamed () -->
+                        <div id="u114" class="text">
+                            <p><span style="font-size: 16px">&nbsp;播&nbsp;放</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u115" class="ax_default _默认样式">
+                        {#              <img id="u115_img" class="img " src="static/images/文本/u111.png"/>#}
+                        <input onclick="luyintihuan()" type="button" class="pointer"
+                               style="width:160px; height:60px;border:0px;background: url(static/images/文本/u109.png) no-repeat left top;background-size: 87%"
+                               value=""/>
+                        <!-- Unnamed () -->
+                        <div id="u116" class="text">
+                            <p><span>确认替换</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Unnamed (矩形)选择文件 -->
+                    <div id="u117" class="ax_default _默认样式">
+                        <input type="button" class="pointer"
+                               style="width:160px; height:50px;border:0px;background: url(static/images/文本/u1111.png) no-repeat left top;background-size: 85%"
+                               value=""/>
+
+
+                        <!-- Unnamed () -->
+                        <div id="u112" class="text">
+                            <p><span><input id="luyinname" class="pointer" name="file" type="file" style="opacity: 0.0"></span>
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <!-- Unnamed (图片) -->
+                    <div id="u119" class="ax_default _图片">
+                        {#              <img id="u119_img" class="img " src="static/images/文本/u119.png"/>#}
+                        <input onclick="startRecording()" type="button" class="pointer"
+                               style="width:100px; height:100px; border:0;background: url(static/images/文本/u119.png) no-repeat left top;background-size: 100%"
+                               value=""/>
+                        <!-- Unnamed () -->
+                        <div id="u120" class="text" style="display:none; visibility: hidden">
+                            <p><span></span></p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="u108_state1" class="panel_state" data-label="文本" style="visibility: hidden;">
+            <div id="u108_state1_content" class="panel_state_content">
+
+                <!-- Unnamed (多行文本框) -->
+                <div id="u121" class="ax_default text_area">
+                    <textarea id="u121_input"></textarea>
+                </div>
+
+                <!-- Unnamed (矩形) -->
+                <div id="u122" class="ax_default _默认样式">
+                    {#              <img id="u122_img" class="img " src="static/images/文本/u109.png"/>#}
+                    <input type="button" onclick="exchangetxt()" class="pointer"
+                           style="width: 140px; height: 60px; padding: 0px; border: 0px; opacity: 0.8; position: absolute; margin-left: -20px; margin-top: 0px; background: url(static/images/文本/u109.png) no-repeat; outline: none;">
+                    <!-- Unnamed () -->
+                    <div id="u123" class="text">
+                        <p><span style="float: right;font-size: 16px ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;确&nbsp;认</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Unnamed (图片) -->
+    <div id="u124" class="ax_default image">
+        <img id="u124_img" class="img " src="static/images/文本/u124.png"/>
+        <!-- Unnamed () -->
+        <div id="u125" class="text" style="display:none; visibility: hidden">
+            <p><span></span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (图片) -->
+    <div id="u126" class="ax_default _图片">
+        <img id="u126_img" class="img " src="static/images/首页/u10.png"/>
+        <!-- Unnamed () -->
+        <div id="u127" class="text" style="display:none; visibility: hidden">
+            <p><span></span></p>
+        </div>
+    </div>
+
+    <!-- 功能区域 (动态面板) -->
+    <div id="u128" class="ax_default" data-label="功能区域">
+        <div id="u128_state0" class="panel_state" data-label="State1" style="">
+            <div id="u128_state0_content" class="panel_state_content">
+
+                <!-- Unnamed (矩形) -->
+                <div id="u129" class="ax_default _默认样式">
+                    <div id="u129_div" class=""></div>
+                    <!-- Unnamed () -->
+                    <div id="u130" class="text">
+                        <a href="{{ url_for('selfinfo') }}"><p style="font-size:14px;"><span
+                                style="font-family:'FontAwesome Regular', 'FontAwesome';font-weight:400;font-size:20px;"></span><span
+                                style="font-family:'微软雅黑';font-weight:400;">&nbsp; 数据统计</span></p>
+                        </a></div>
+                </div>
+
+                <!-- Unnamed (矩形) -->
+                <div id="u131" class="ax_default _默认样式">
+                    <div id="u131_div" class=""></div>
+                    <!-- Unnamed () -->
+                    <div id="u132" class="text">
+                        <p style="font-size:14px;"><span
+                                style="font-family:'FontAwesome Regular', 'FontAwesome';font-weight:400;font-size:20px;"></span><span
+                                style="font-family:'微软雅黑';font-weight:400;">&nbsp; 退出登录</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 对话框 (动态面板) -->
+    <div id="u133" class="ax_default ax_default_hidden" data-label="对话框" style="display:none; visibility: hidden">
+        <div id="u133_state0" class="panel_state" data-label="退出确认" style="">
+            <div id="u133_state0_content" class="panel_state_content">
+
+                <!-- Unnamed (矩形) -->
+                <div id="u134" class="ax_default _默认样式">
+                    <div id="u134_div" class=""></div>
+                    <!-- Unnamed () -->
+                    <div id="u135" class="text">
+                        <p><span style="color:#666666;"></span></p>
+                        <p><span style="color:#999999;"></span></p>
+                    </div>
+                </div>
+
+                <!-- Unnamed (组合) -->
+                <div id="u136" class="ax_default" data-left="256" data-top="181" data-width="180" data-height="35">
+
+                    <!-- Unnamed (组合) -->
+                    <div id="u137" class="ax_default" data-left="256" data-top="181" data-width="180" data-height="35">
+
+                        <!-- Unnamed (矩形) -->
+                        <div id="u138" class="ax_default _默认样式">
+                            <div id="u138_div" class=""></div>
+                            <!-- Unnamed () -->
+                            <div id="u139" class="text">
+                                <p><span>取消</span></p>
+                            </div>
+                        </div>
+
+                        <!-- Unnamed (矩形) -->
+                        <div id="u140" class="ax_default _默认样式">
+                            <div id="u140_div" class=""></div>
+                            <!-- Unnamed () --><a href="/">
+                            <div id="u141" class="text">
+                                <p><span>确定</span></p>
+                            </div>
+                        </a></div>
+                    </div>
+                </div>
+
+                <!-- Unnamed (矩形) -->
+                <div id="u142" class="ax_default _默认样式">
+                    <div id="u142_div" class=""></div>
+                    <!-- Unnamed () -->
+                    <div id="u143" class="text">
+                        <p><span>退出确认</span></p>
+                    </div>
+                </div>
+
+                <!-- Unnamed (形状) -->
+                <div id="u144" class="ax_default _默认样式">
+                    <img id="u144_img" class="img " src="static/images/首页/u28.png"/>
+                    <!-- Unnamed () -->
+                    <div id="u145" class="text" style="display:none; visibility: hidden">
+                        <p><span></span></p>
+                    </div>
+                </div>
+
+                <!-- Unnamed (矩形) -->
+                <div id="u146" class="ax_default _默认样式">
+                    <div id="u146_div" class=""></div>
+                    <!-- Unnamed () -->
+                    <div id="u147" class="text">
+                        <p><span><br></span></p>
+                        <p><span>确定要退出登录吗？</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u148" class="ax_default _默认样式">
+        <div id="u148_div" class=""></div>
+        <!-- Unnamed () -->
+        <a href="{{ url_for('selectvideo') }}">
+            <div id="u149" class="text">
+                <p><span>上一步</span></p>
+            </div>
+        </a>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u150" class="ax_default _默认样式">
+        <div id="u150_div" class=""></div>
+        <!-- Unnamed () -->
+        <a href="{{ url_for('showvideo') }}">
+            <div id="u151" class="text">
+                <p><span>下一步</span></p>
+            </div>
+        </a>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u152" class="ax_default primary_button">
+        <div id="u152_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u153" class="text">
+            <p><span>智能检测</span></p>
+            <input type="button" onclick="correction()" class="pointer"
+                   style="opacity: 0;width: 114px;height: 40px;position: absolute;margin-top: -20px;margin-left: -40px">
+        </div>
+    </div>
+
+
+    <div id="waveform" style="width: 555px; height:55px;margin-left: 100px;margin-top: 250px"></div>
+    <div id="wave-timeline" style="width: 555px;margin-left: 100px">
+        <timeline
+                style="display: block; position: relative; user-select: none; height: 20px; width:555px; left: 100px;overflow: hidden;">
+            <canvas width="555px" height="50px"
+                    style="position: absolute; z-index: 4; width: 867px; height: 20px; left: 100px;"></canvas>
+        </timeline>
+    </div>
+    <button onclick="wavesurfer.playPause()" class="login-button"
+            style="float: right; margin-left: 710px;margin-top: -45px">播放/暂停
+    </button>
+    <script>
+        var options = {
+            container: '#waveform',
+            waveColor: 'violet',
+            progressColor: 'purple',
+            loaderColor: 'purple',
+            cursorColor: 'navy',
+            plugins: [
+                WaveSurfer.timeline.create({
+                    container: '#wave-timeline'
+                })
+            ]
+        };
+        {#var wavesurfer = WaveSurfer.create({#}
+        {#    container: '#waveform',#}
+        {#    waveColor: "black",#}
+        {#    progressColor: 'green',#}
+        {#    cursorColor: '#fff',#}
+        {#    barWidth: 1,#}
+        {#    plugins: [#}
+        {#        WaveSurfer.timeline.create({#}
+        {#            container: '#wave-timeline'#}
+        {#        })#}
+        {#    ]#}
+        // })
+
+        if (location.search.match('scroll')) {
+            options.minPxPerSec = 100;
+            options.scrollParent = true;
+        }
+
+        if (location.search.match('normalize')) {
+            options.normalize = true;
+        }
+        var wavesurfer = WaveSurfer.create(options);
+        wavesurfer.load('../static/uploads/temp/jhgs.mp4');
+    </script>
+
+    <!-- 普通通知 (动态面板) -->
+    <div id="u154" class="ax_default" data-label="普通通知">
+
+        <div id="u154_state0" class="panel_state" data-label="智能" style="">
+            <div id="u154_state0_content" class="panel_state_content">
+
+                <!-- 消息提示 (矩形) -->
+                <div id="u155" class="ax_default _默认样式" data-label="消息提示">
+                    <div id="u155_div" class=""></div>
+                    <!-- Unnamed () -->
+                    <div id="u156" class="text">
+                        <p><span>提示：点击智能检测后，文本框内会利用智能算法，将错误语句标红，供修改参考。</span></p>
+                    </div>
+                </div>
+
+                <!-- Unnamed (矩形) -->
+                <div id="u157" class="ax_default _默认样式">
+                    <img id="u157_img" class="img " src="static/images/选择音频/u41.png"/>
+                    <!-- Unnamed () -->
+                    <div id="u158" class="text" style="display:none; visibility: hidden">
+                        <p><span></span></p>
+                    </div>
+                </div>
+
+                <!-- Unnamed (形状) -->
+                <div id="u159" class="ax_default _默认样式">
+                    <img id="u159_img" class="img " src="static/images/选择音频/u43.png"/>
+                    <!-- Unnamed () -->
+                    <div id="u160" class="text" style="display:none; visibility: hidden">
+                        <p><span></span></p>
+                    </div>
+                </div>
+
+                <!-- Unnamed (形状) -->
+                <div id="u161" class="ax_default _默认样式">
+                    <img id="u161_img" class="img " src="static/images/文本/u161.png"/>
+                    <!-- Unnamed () -->
+                    <div id="u162" class="text" style="display:none; visibility: hidden">
+                        <p><span></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="u154_state1" class="panel_state" data-label="搜索" style="visibility: hidden;">
+            <div id="u154_state1_content" class="panel_state_content">
+
+                <!-- 消息提示 (矩形) -->
+                <div id="u163" class="ax_default _默认样式" data-label="消息提示">
+                    <div id="u163_div" class=""></div>
+                    <!-- Unnamed () -->
+                    <div id="u164" class="text">
+                        <p><span>提示：请在搜索框内输入需要修改的文本。</span></p>
+                    </div>
+                </div>
+
+                <!-- 消息提示 (矩形) -->
+                <div id="u165" class="ax_default _默认样式" data-label="消息提示">
+                    <div id="u165_div" class=""></div>
+                    <!-- Unnamed () -->
+                    <div id="u166" class="text">
+                        <p><span>提示：请在搜索框内输入需要修改的文本。</span></p>
+                    </div>
+                </div>
+
+                <!-- Unnamed (矩形) -->
+                <div id="u167" class="ax_default _默认样式">
+                    <img id="u167_img" class="img " src="static/images/选择音频/u41.png"/>
+                    <!-- Unnamed () -->
+                    <div id="u168" class="text" style="display:none; visibility: hidden">
+                        <p><span></span></p>
+                    </div>
+                </div>
+
+                <!-- Unnamed (形状) -->
+                <div id="u169" class="ax_default _默认样式">
+                    <img id="u169_img" class="img " src="static/images/选择音频/u43.png"/>
+                    <!-- Unnamed () -->
+                    <div id="u170" class="text" style="display:none; visibility: hidden">
+                        <p><span></span></p>
+                    </div>
+                </div>
+
+                <!-- Unnamed (形状) -->
+                <div id="u171" class="ax_default _默认样式">
+                    <img id="u171_img" class="img " src="static/images/文本/u161.png"/>
+                    <!-- Unnamed () -->
+                    <div id="u172" class="text" style="display:none; visibility: hidden">
+                        <p><span></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="u154_state2" class="panel_state" data-label="选择" style="visibility: hidden;">
+            <div id="u154_state2_content" class="panel_state_content">
+
+                <!-- 消息提示 (矩形) -->
+                <div id="u173" class="ax_default _默认样式" data-label="消息提示">
+                    <div id="u173_div" class=""></div>
+                    <!-- Unnamed () -->
+                    <div id="u174" class="text">
+                        <p><span>提示：请在搜索框内输入需要修改的文本。</span></p>
+                    </div>
+                </div>
+
+                <!-- 消息提示 (矩形) -->
+                <div id="u175" class="ax_default _默认样式" data-label="消息提示">
+                    <div id="u175_div" class=""></div>
+                    <!-- Unnamed () -->
+                    <div id="u176" class="text">
+                        <p><span>提示：本系统提供两种修改方案，请选择录音，或文本。</span></p>
+                    </div>
+                </div>
+
+                <!-- Unnamed (矩形) -->
+                <div id="u177" class="ax_default _默认样式">
+                    <img id="u177_img" class="img " src="static/images/选择音频/u41.png"/>
+                    <!-- Unnamed () -->
+                    <div id="u178" class="text" style="display:none; visibility: hidden">
+                        <p><span></span></p>
+                    </div>
+                </div>
+
+                <!-- Unnamed (形状) -->
+                <div id="u179" class="ax_default _默认样式">
+                    <img id="u179_img" class="img " src="static/images/选择音频/u43.png"/>
+                    <!-- Unnamed () -->
+                    <div id="u180" class="text" style="display:none; visibility: hidden">
+                        <p><span></span></p>
+                    </div>
+                </div>
+
+                <!-- Unnamed (形状) -->
+                <div id="u181" class="ax_default _默认样式">
+                    <img id="u181_img" class="img " src="static/images/文本/u161.png"/>
+                    <!-- Unnamed () -->
+                    <div id="u182" class="text" style="display:none; visibility: hidden">
+                        <p><span></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="u154_state3" class="panel_state" data-label="录音提示" style="visibility: hidden;">
+            <div id="u154_state3_content" class="panel_state_content">
+
+                <!-- 消息提示 (矩形) -->
+                <div id="u183" class="ax_default _默认样式" data-label="消息提示">
+                    <div id="u183_div" class=""></div>
+                    <!-- Unnamed () -->
+                    <div id="u184" class="text">
+                        <p><span>提示：请在搜索框内输入需要修改的文本。</span></p>
+                    </div>
+                </div>
+
+                <!-- 消息提示 (矩形) -->
+                <div id="u185" class="ax_default _默认样式" data-label="消息提示">
+                    <div id="u185_div" class=""></div>
+                    <!-- Unnamed () -->
+                    <div id="u186" class="text">
+                        <p><span>提示：请在搜索框内输入需要修改的文本。</span></p>
+                    </div>
+                </div>
+
+                <!-- Unnamed (矩形) -->
+                <div id="u187" class="ax_default _默认样式">
+                    <img id="u187_img" class="img " src="static/images/选择音频/u41.png"/>
+                    <!-- Unnamed () -->
+                    <div id="u188" class="text" style="display:none; visibility: hidden">
+                        <p><span></span></p>
+                    </div>
+                </div>
+
+                <!-- Unnamed (形状) -->
+                <div id="u189" class="ax_default _默认样式">
+                    <img id="u189_img" class="img " src="static/images/选择音频/u43.png"/>
+                    <!-- Unnamed () -->
+                    <div id="u190" class="text" style="display:none; visibility: hidden">
+                        <p><span></span></p>
+                    </div>
+                </div>
+
+                <!-- Unnamed (形状) -->
+                <div id="u191" class="ax_default _默认样式">
+                    <img id="u191_img" class="img " src="static/images/文本/u161.png"/>
+                    <!-- Unnamed () -->
+                    <div id="u192" class="text" style="display:none; visibility: hidden">
+                        <p><span></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="u154_state4" class="panel_state" data-label="文本提示" style="visibility: hidden;">
+            <div id="u154_state4_content" class="panel_state_content">
+
+                <!-- 消息提示 (矩形) -->
+                <div id="u193" class="ax_default _默认样式" data-label="消息提示">
+                    <div id="u193_div" class=""></div>
+                    <!-- Unnamed () -->
+                    <div id="u194" class="text">
+                        <p><span>提示：请在搜索框内输入需要修改的文本。</span></p>
+                    </div>
+                </div>
+
+                <!-- 消息提示 (矩形) -->
+                <div id="u195" class="ax_default _默认样式" data-label="消息提示">
+                    <div id="u195_div" class=""></div>
+                    <!-- Unnamed () -->
+                    <div id="u196" class="text">
+                        <p><span>提示：请在输入框输入需要修改的文本。</span></p>
+                    </div>
+                </div>
+
+                <!-- Unnamed (矩形) -->
+                <div id="u197" class="ax_default _默认样式">
+                    <img id="u197_img" class="img " src="static/images/选择音频/u41.png"/>
+                    <!-- Unnamed () -->
+                    <div id="u198" class="text" style="display:none; visibility: hidden">
+                        <p><span></span></p>
+                    </div>
+                </div>
+
+                <!-- Unnamed (形状) -->
+                <div id="u199" class="ax_default _默认样式">
+                    <img id="u199_img" class="img " src="static/images/选择音频/u43.png"/>
+                    <!-- Unnamed () -->
+                    <div id="u200" class="text" style="display:none; visibility: hidden">
+                        <p><span></span></p>
+                    </div>
+                </div>
+
+                <!-- Unnamed (形状) -->
+                <div id="u201" class="ax_default _默认样式">
+                    <img id="u201_img" class="img " src="static/images/文本/u161.png"/>
+                    <!-- Unnamed () -->
+                    <div id="u202" class="text" style="display:none; visibility: hidden">
+                        <p><span></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

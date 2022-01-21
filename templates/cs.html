@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>测试</title>
+    <script src="https://unpkg.com/wavesurfer.js"></script>
+<script src="https://unpkg.com/wavesurfer.js/dist/plugin/wavesurfer.regions.min.js"></script>
+    <script src="https://unpkg.com/wavesurfer.js/dist/plugin/wavesurfer.timeline.js"></script>
+
+     <style>
+    #waveform {
+      border: solid 1px #ccc;
+      border-radius: 4px;
+      width: 600px;
+      height: 80px;
+      overflow: hidden;
+    }
+
+    #waveform wave {
+      height: 100% !important;
+    }
+
+    button {
+      margin-top: 10px;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+
+<body>
+<div id="waveform"></div>
+<button onclick="wavesurfer.playPause()">播放/暂停
+  </button>
+
+<script>
+  var wavesurfer = WaveSurfer.create({
+    container: '#waveform',
+      waveColor: 'violet',
+        progressColor: 'purple',
+    cursorColor: '#fff',
+    barWidth: 1,
+  })
+  wavesurfer.load('../static/uploads/temp/jhgs.mp4');
+</script>
+ 
+
+</body>
+</html>
